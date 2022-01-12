@@ -47,12 +47,14 @@ func main() {
 
     var f func(*html.Node)
     f = func(n *html.Node) {
-	if n.Type == html.ElementNode && n.Data == "a" {
+        fmt.Println(n.Data, n.Type)
+        if n.Type == html.ElementNode && n.Data == "a" {
 	    for _, a := range n.Attr {
             fmt.Println(a)
+
             if a.Key == "href" {
 		        fmt.Println(a.Val)
-		        break
+                break
 		    }
 	    }
 	}
