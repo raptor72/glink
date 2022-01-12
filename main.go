@@ -5,7 +5,6 @@ import (
     "fmt"
     "log"
     "bufio"
-//    "strings"
     "golang.org/x/net/html"
 )
 
@@ -13,6 +12,14 @@ import (
 
 type Link struct {
     Href, Text string
+}
+
+func researchNode(n *html.Node) {
+    fmt.Printf("node.Type: %v - %T\n", n.Type, n.Type)
+    fmt.Printf("node.DataAtom: %v - %T\n", n.DataAtom, n.DataAtom)
+    fmt.Printf("node.Data: %v - %T\n", n.Data, n.Data)
+    fmt.Printf("node.Namespace: %v - %T\n", n.Namespace, n.Namespace)
+    fmt.Printf("node.Attr: %v - %T\n", n.Attr, n.Attr)
 }
 
 func main() {
@@ -36,16 +43,17 @@ func main() {
         log.Fatal(err)
     }
 
-//    fmt.Println(doc)
+//    fmt.Printf("%T\n", doc)
 
     var f func(*html.Node)
     f = func(n *html.Node) {
 	if n.Type == html.ElementNode && n.Data == "a" {
 	    for _, a := range n.Attr {
-		if a.Key == "href" {
-		    fmt.Println(a.Val)
-		    break
-		}
+            fmt.Println(a)
+            if a.Key == "href" {
+		        fmt.Println(a.Val)
+		        break
+		    }
 	    }
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
@@ -53,4 +61,7 @@ func main() {
 	}
     }
     f(doc)
+
+    fmt.Println()
+    researchNode(doc)
 }
