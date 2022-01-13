@@ -52,7 +52,7 @@ func main() {
             // fmt.Println(a)
                 if a.Key == "href" {
 		            // fmt.Println(a.Val)
-                    if n.FirstChild.Type == 1 {
+                    if n.FirstChild.Type == html.TextNode {
                         // fmt.Println(n.FirstChild.Data)
                         l = Link{a.Val, n.FirstChild.Data}
                         fmt.Println(l)
