@@ -8,8 +8,6 @@ import (
     "golang.org/x/net/html"
 )
 
-
-
 type Link struct {
     Href, Text string
 }
@@ -22,13 +20,14 @@ func researchNode(n *html.Node) {
     fmt.Printf("node.Attr: %v - %T\n", n.Attr, n.Attr)
 }
 
+
 func main() {
     l := Link{
         Href: "/dog",
         Text: "Something in a span Text not in a span Bold text!",
     }
 
-    fmt.Printf("%s\n%s\n", l.Href, l.Text)
+    fmt.Sprintf("%s\n%s\n", l.Href, l.Text)
 
 
     file, err := os.Open("ex1.html")
@@ -47,20 +46,24 @@ func main() {
 
     var f func(*html.Node)
     f = func(n *html.Node) {
-        fmt.Println(n.Data, n.Type)
-        if n.Type == html.ElementNode && n.Data == "a" {
-	    for _, a := range n.Attr {
-            fmt.Println(a)
-
-            if a.Key == "href" {
-		        fmt.Println(a.Val)
-                break
-		    }
+        // fmt.Println(n.Data, n.Type)
+            if n.Type == html.ElementNode && n.Data == "a" {
+    	    for _, a := range n.Attr {
+            // fmt.Println(a)
+                if a.Key == "href" {
+		            // fmt.Println(a.Val)
+                    if n.FirstChild.Type == 1 {
+                        // fmt.Println(n.FirstChild.Data)
+                        l = Link{a.Val, n.FirstChild.Data}
+                        fmt.Println(l)
+                    }
+                    break
+		        }
+            }
 	    }
-	}
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-	    f(c)
-	}
+	    for c := n.FirstChild; c != nil; c = c.NextSibling {
+    	    f(c)
+	    }
     }
     f(doc)
 
