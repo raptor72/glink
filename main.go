@@ -4,6 +4,7 @@ import (
     "os"
     "fmt"
     "log"
+    "flag"
     "bufio"
     "golang.org/x/net/html"
 )
@@ -22,6 +23,9 @@ func researchNode(n *html.Node) {
 
 
 func main() {
+    filename := flag.String("filename", "ex1.html", "a string dilename to parse a html")
+    flag.Parse()
+
     l := Link{
         Href: "/dog",
         Text: "Something in a span Text not in a span Bold text!",
@@ -29,8 +33,8 @@ func main() {
 
     fmt.Sprintf("%s\n%s\n", l.Href, l.Text)
 
-
-    file, err := os.Open("ex1.html")
+    fmt.Println(*filename)
+    file, err := os.Open(*filename)
     if err != nil {
          log.Fatal(err)
     }
@@ -44,7 +48,9 @@ func main() {
 
 //    fmt.Printf("%T\n", doc)
 
+    var links []Link
     var f func(*html.Node)
+
     f = func(n *html.Node) {
         // fmt.Println(n.Data, n.Type)
             if n.Type == html.ElementNode && n.Data == "a" {
@@ -55,7 +61,8 @@ func main() {
                     if n.FirstChild.Type == html.TextNode {
                         // fmt.Println(n.FirstChild.Data)
                         l = Link{a.Val, n.FirstChild.Data}
-                        fmt.Println(l)
+                        // fmt.Println(l)
+                        links = append(links, l)
                     }
                     break
 		        }
@@ -67,6 +74,6 @@ func main() {
     }
     f(doc)
 
-    fmt.Println()
+    fmt.Println(links)
     researchNode(doc)
 }
