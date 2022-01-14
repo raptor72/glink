@@ -13,6 +13,14 @@ type Link struct {
     Href, Text string
 }
 
+func readFile(filename string) (*os.File, error) {
+    file, err := os.Open(filename)
+    if err != nil {
+        return nil, err
+    }
+    return file, err
+}
+
 func researchNode(n *html.Node) {
     fmt.Printf("node.Type: %v - %T\n", n.Type, n.Type)
     fmt.Printf("node.DataAtom: %v - %T\n", n.DataAtom, n.DataAtom)
@@ -23,22 +31,20 @@ func researchNode(n *html.Node) {
 
 
 func main() {
-    filename := flag.String("filename", "ex1.html", "a string dilename to parse a html")
+    filename := flag.String("filename", "ex1.html", "a string filename to parse a html")
     flag.Parse()
 
     l := Link{
         Href: "/dog",
         Text: "Something in a span Text not in a span Bold text!",
     }
-
     fmt.Sprintf("%s\n%s\n", l.Href, l.Text)
 
-    fmt.Println(*filename)
-    file, err := os.Open(*filename)
+    file, err := readFile(*filename)
     if err != nil {
-         log.Fatal(err)
+        log.Fatal(err)
     }
-    defer file.Close()
+
     rd := bufio.NewReader(file)
 
     doc, err := html.Parse(rd)
