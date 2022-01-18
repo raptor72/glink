@@ -1,6 +1,7 @@
 package main
 
 import (
+    // "io"
     "os"
     "fmt"
     "log"
@@ -14,6 +15,10 @@ type Link struct {
     Href, Text string
 }
 
+// fucn Parse(r io.Reader) ([]Link, error) {
+//     return nil, nil
+// }
+
 func readFile(filename string) (*os.File, error) {
     file, err := os.Open(filename)
     if err != nil {
@@ -22,14 +27,25 @@ func readFile(filename string) (*os.File, error) {
     return file, err
 }
 
+func dfsText(n *html.Node) string {
+    var s string
+    if n.Type == html.TextNode {
+        s += strings.TrimSpace(n.Data)
+    }
+    for c := n.FirstChild; c != nil; c = c.NextSibling {
+        s += dfsText(c) + " "
+    }
+    return strings.TrimRight(s, " ")
+}
+
 func parseHTML(n *html.Node, l *[]Link) {
     if n.Type == html.ElementNode && n.Data == "a" {
         for _, a := range n.Attr {
             if a.Key == "href" {
                 if n.FirstChild.Type == html.TextNode {
-                    *l = append(*l, Link{a.Val, strings.TrimSpace(n.FirstChild.Data)})
+                    *l = append(*l, Link{a.Val, dfsText(n)})
+                    break
                 }
-            break
             }
         }   
     }
