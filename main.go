@@ -33,19 +33,10 @@ func parseHTML(n *html.Node, l *[]Link) {
             }
         }   
     }
-
     for c := n.FirstChild; c != nil; c = c.NextSibling {
         parseHTML(c, l)
     }
 }
-
-// func researchNode(n *html.Node) {
-//     fmt.Printf("node.Type: %v - %T\n", n.Type, n.Type)
-//     fmt.Printf("node.DataAtom: %v - %T\n", n.DataAtom, n.DataAtom)
-//     fmt.Printf("node.Data: %v - %T\n", n.Data, n.Data)
-//     fmt.Printf("node.Namespace: %v - %T\n", n.Namespace, n.Namespace)
-//     fmt.Printf("node.Attr: %v - %T\n", n.Attr, n.Attr)
-// }
 
 func main() {
     filename := flag.String("filename", "ex1.html", "a string filename to parse a html")
@@ -66,5 +57,4 @@ func main() {
     var lks []Link
     parseHTML(doc, &lks)
     fmt.Println(lks)
-    // researchNode(doc)
 }
