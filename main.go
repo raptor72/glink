@@ -6,6 +6,7 @@ import (
     "log"
     "flag"
     "bufio"
+    "strings"
     "golang.org/x/net/html"
 )
 
@@ -26,12 +27,13 @@ func parseHTML(n *html.Node, l *[]Link) {
         for _, a := range n.Attr {
             if a.Key == "href" {
                 if n.FirstChild.Type == html.TextNode {
-                    *l = append(*l, Link{a.Val, n.FirstChild.Data})
+                    *l = append(*l, Link{a.Val, strings.TrimSpace(n.FirstChild.Data)})
                 }
             break
             }
         }   
     }
+
     for c := n.FirstChild; c != nil; c = c.NextSibling {
         parseHTML(c, l)
     }
