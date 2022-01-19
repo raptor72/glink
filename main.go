@@ -33,7 +33,7 @@ func dfsText(n *html.Node) string {
         s += n.Data
     }
     for c := n.FirstChild; c != nil; c = c.NextSibling {
-        s += dfsText(c) + " "
+        s += dfsText(c)
     }
     return strings.Join(strings.Fields(s), " ")
 }
