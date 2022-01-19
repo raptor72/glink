@@ -30,15 +30,15 @@ func readFile(filename string) (*os.File, error) {
 func dfsText(n *html.Node) string {
     var s string
     if n.Type == html.TextNode {
-        s += strings.TrimSpace(n.Data)
+        s += n.Data
     }
     for c := n.FirstChild; c != nil; c = c.NextSibling {
         s += dfsText(c) + " "
     }
-    return strings.TrimRight(s, " ")
+    return strings.Join(strings.Fields(s), " ")
 }
 
-func parseHTML(n *html.Node, l *[]Link) {
+func dfsLink(n *html.Node, l *[]Link) {
     if n.Type == html.ElementNode && n.Data == "a" {
         for _, a := range n.Attr {
             if a.Key == "href" {
@@ -50,7 +50,7 @@ func parseHTML(n *html.Node, l *[]Link) {
         }   
     }
     for c := n.FirstChild; c != nil; c = c.NextSibling {
-        parseHTML(c, l)
+        dfsLink(c, l)
     }
 }
 
@@ -71,6 +71,6 @@ func main() {
     }
 
     var lks []Link
-    parseHTML(doc, &lks)
+    dfsLink(doc, &lks)
     fmt.Println(lks)
 }
