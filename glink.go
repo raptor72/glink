@@ -1,26 +1,13 @@
-package main
+package glink
 
 import (
     "io"
-    "os"
-    "fmt"
-    "log"
-    "flag"
-    "bufio"
     "strings"
     "golang.org/x/net/html"
 )
 
 type Link struct {
     Href, Text string
-}
-
-func readFile(filename string) (*os.File, error) {
-    file, err := os.Open(filename)
-    if err != nil {
-        return nil, err
-    }
-    return file, err
 }
 
 func dfsText(n *html.Node) string {
@@ -59,23 +46,4 @@ func Parse(r io.Reader) ([]Link, error) {
     var lks []Link
     parsed_lks := dfsLink(doc, &lks)
     return parsed_lks, nil
-}
-
-func main() {
-    filename := flag.String("filename", "exhamples/ex1.html", "a string filename to parse a html")
-    flag.Parse()
-
-    file, err := readFile(*filename)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    rd := bufio.NewReader(file)
-
-	links, err := Parse(rd)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%+v\n", links)
-	// fmt.Println(links)
 }
