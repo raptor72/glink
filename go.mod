@@ -1,5 +1,5 @@
-module glink
+module github.com/raptor72/glink
 
 go 1.17
 
-require golang.org/x/net v0.0.0-20220111093109-d55c255bac03
+require golang.org/x/net v0.0.0-20220114011407-0dd24b26b47d
