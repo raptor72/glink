@@ -39,6 +39,13 @@ go run ./exhamples/main.go --filename=./exhamples/ex2.html
 go run ./exhamples/main.go --help
 ```
 
+Для выполнения тестов выполните:
+```bash
+go test
+PASS
+ok      github.com/raptor72/glink       0.006s
+```
+
 Идея взята из курса Джона Колтона: https://courses.calhoun.io/lessons/les_goph_16
 
 Гитхаб оригинального проекта: https://github.com/gophercises/link
